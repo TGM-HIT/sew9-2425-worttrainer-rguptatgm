@@ -13,16 +13,23 @@ public class Flashcard {
     }
 
     public Flashcard(String word, String imageURL) {
-        if(word != null)
+        if (word != null)
             this.word = word;
-        
-        if(imageURL != null && checkURL(imageURL))    
-            this.imageURL = imageURL; 
+
+        if (imageURL != null && checkURL(imageURL))
+            this.imageURL = imageURL;
     }
 
+    public String getURL() {
+        return this.imageURL;
+    }
+
+    public String getWord() {
+        return this.word;
+    }
 
     public boolean checkURL(String urlString) {
-                // Apache Commons UrlValidator zur Syntaxprüfung verwenden
+        // Apache Commons UrlValidator zur Syntaxprüfung verwenden
         UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
 
         // Zuerst die Syntax der URL prüfen
@@ -35,9 +42,9 @@ public class Flashcard {
         try {
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");  // HEAD-Anfrage für schnellere Überprüfung
-            connection.setConnectTimeout(5000);   // Timeout für die Verbindung
-            connection.setReadTimeout(5000);      // Timeout für das Lesen der Antwort
+            connection.setRequestMethod("HEAD"); // HEAD-Anfrage für schnellere Überprüfung
+            connection.setConnectTimeout(5000); // Timeout für die Verbindung
+            connection.setReadTimeout(5000); // Timeout für das Lesen der Antwort
             int responseCode = connection.getResponseCode();
 
             // Prüfen, ob der HTTP-Statuscode 2xx oder 3xx ist (d.h. Erfolg oder Umleitung)
