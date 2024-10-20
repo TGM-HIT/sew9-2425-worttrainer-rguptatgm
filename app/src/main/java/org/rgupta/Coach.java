@@ -15,7 +15,7 @@ public class Coach {
         if (statistics != null)
             this.statistics = statistics;
 
-        this.currentFlashcard = flashcards.get(0);
+        this.chooseRandom();
     }
 
     public ArrayList<Flashcard> getFlashcards() {
@@ -35,7 +35,12 @@ public class Coach {
     }
 
     public boolean answer(String word) {
-        return word.equals(this.currentFlashcard.getWord());
+        if (word.equals(this.currentFlashcard.getWord())) {
+            this.statistics.addCorrect();
+            return true;
+        }
+        this.statistics.addIncorrect();
+        return false;
     }
 
     public void choose(int index) {
@@ -47,6 +52,9 @@ public class Coach {
         Random random = new Random();
         int randomIndex = random.nextInt(flashcards.size()); // Gibt eine Zahl zwischen 0 (inklusive) und der Größe der
                                                              // flashcards-Liste (exklusive) zurück.
+        while (this.flashcards.get(randomIndex).equals(this.currentFlashcard)) {
+            randomIndex = random.nextInt(flashcards.size());
+        }
         this.currentFlashcard = this.flashcards.get(randomIndex);
     }
 }
