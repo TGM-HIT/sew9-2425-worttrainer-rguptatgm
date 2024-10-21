@@ -1,21 +1,27 @@
 package org.rgupta;
 
 import javax.swing.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CoachController {
 
     private CoachView coachView;
     private Coach coach;
+    private PersistenceStrategy persistenceStrategy;
 
     public CoachController(CoachView view, Coach coach) {
         this.coachView = view;
         this.coach = coach;
+        this.persistenceStrategy = new SerializationStrategy(); // Stellen sicher, dass diese Zeile vorhanden ist
 
         // Setze ActionListener für die Buttons in der View
         coachView.addSubmitButtonListener(e -> handleGuess());
         coachView.addRandomButtonListener(e -> handleRandomChoice());
         coachView.addIndexButtonListener(e -> handleIndexChoice());
+        coachView.addSaveButtonListener(e -> handleSaveSession());
+        coachView.addLoadButtonListener(e -> handleLoadSession());
 
         // Lade initial ein zufälliges Wort-Bild-Paar
         handleRandomChoice();
@@ -70,6 +76,39 @@ public class CoachController {
             coachView.showError("Invalid input. Please enter a valid number.");
         }
         coachView.setWordSelectionEnabled(false);
+    }
+
+    // Methoden zum Speichern und Laden
+    private void handleSaveSession() {
+        JFileChooser fileChooser = new JFileChooser();
+        int option = fileChooser.showSaveDialog(coachView);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            try {
+                persistenceStrategy.save(coach, fileChooser.getSelectedFile().getAbsolutePath());
+                coachView.setFeedback("Session saved successfully!");
+            } catch (IOException ex) {
+                coachView.showError("Error saving session: " + ex.getMessage());
+            }
+        }
+    }
+
+    private void handleLoadSession() {
+        JFileChooser fileChooser = new JFileChooser();
+        int option = fileChooser.showOpenDialog(coachView);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            try {
+                coach = persistenceStrategy.load(fileChooser.getSelectedFile().getAbsolutePath());
+                coachView.setFeedback("Session loaded successfully!");
+                updateViewAfterLoad();
+            } catch (IOException | ClassNotFoundException ex) {
+                coachView.showError("Error loading session: " + ex.getMessage());
+            }
+        }
+    }
+
+    private void updateViewAfterLoad() {
+        coachView.updateStatistics(coach.getStatistics().getCorrect(), coach.getStatistics().getIncorrect());
+        coachView.setImageIconFromUrl(coach.getCurrentFlashcard().getURL());
     }
 
     public static void main(String[] args) {

@@ -1,9 +1,10 @@
 package org.rgupta;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Coach {
+public class Coach implements Serializable {
     private Statistics statistics;
     private ArrayList<Flashcard> flashcards;
     private Flashcard currentFlashcard;

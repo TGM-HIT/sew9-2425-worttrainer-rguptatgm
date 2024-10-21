@@ -1,11 +1,12 @@
 package org.rgupta;
 
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
-public class Flashcard {
+public class Flashcard implements Serializable {
     private String word;
     private String imageURL;
 

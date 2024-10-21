@@ -19,6 +19,8 @@ public class CoachView extends JFrame {
     private JTextField indexInputField;
     private JButton randomButton;
     private JButton indexButton;
+    private JButton saveButton;
+    private JButton loadButton;
 
     public CoachView() {
         // Frame Einstellungen
@@ -34,12 +36,22 @@ public class CoachView extends JFrame {
         incorrectGuessesLabel = new JLabel("Incorrect Guesses: 0");
         totalGuessesLabel = new JLabel("Total Guesses: 0");
 
+        // Persistenz Buttons im unteren Panel hinzufügen
+        JPanel persistPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        saveButton = new JButton("Save Session");
+        loadButton = new JButton("Load Session");
+        persistPanel.add(saveButton);
+        persistPanel.add(loadButton);
+
         statsPanel.add(correctGuessesLabel);
         statsPanel.add(incorrectGuessesLabel);
         statsPanel.add(totalGuessesLabel);
 
         // Eingabe- und Rückmeldungspanel (unten)
         JPanel inputPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+
+        inputPanel.add(persistPanel); // persistPanel hinzufügen
+        this.add(inputPanel, BorderLayout.SOUTH);
 
         // Textfeld für Rateeingabe und Button zum Abschicken
         JPanel guessPanel = new JPanel();
@@ -155,5 +167,14 @@ public class CoachView extends JFrame {
 
     public void addIndexButtonListener(ActionListener listener) {
         indexButton.addActionListener(listener);
+    }
+
+    // Getter für Persistenz Button Listener
+    public void addSaveButtonListener(ActionListener listener) {
+        saveButton.addActionListener(listener);
+    }
+
+    public void addLoadButtonListener(ActionListener listener) {
+        loadButton.addActionListener(listener);
     }
 }

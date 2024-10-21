@@ -1,6 +1,8 @@
 package org.rgupta;
 
-public class Statistics {
+import java.io.Serializable;
+
+public class Statistics implements Serializable {
     private int correct;
     private int incorrect;
 
