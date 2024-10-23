@@ -1,3 +1,8 @@
+/**
+ * The PersistenceStrategy interface defines the methods required to save and
+ * load the Coach state. Implementations of this interface can provide different
+ * mechanisms for persistence.
+ */
 package org.rgupta;
 
 import java.io.IOException;

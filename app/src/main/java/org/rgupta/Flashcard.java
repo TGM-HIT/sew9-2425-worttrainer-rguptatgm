@@ -1,3 +1,8 @@
+/**
+ * The Flashcard class represents an individual flashcard, containing a word and
+ * an associated image URL. It includes methods for URL validation to ensure
+ * that the flashcard's image can be properly retrieved.
+ */
 package org.rgupta;
 
 import java.io.Serializable;

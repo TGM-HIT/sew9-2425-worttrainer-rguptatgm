@@ -1,3 +1,12 @@
+/**
+ * The Coach class is responsible for managing a collection of flashcards and interacting with the user.
+ * It keeps track of the user's performance statistics and handles user answers to flashcard questions.
+ * The class allows selecting a specific flashcard or randomly choosing one from the list.
+ *
+ * @author Rahul Gupta
+ * @date 23 October 2024
+ */
+
 package org.rgupta;
 
 import java.io.Serializable;

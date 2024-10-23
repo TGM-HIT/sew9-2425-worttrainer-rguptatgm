@@ -1,3 +1,7 @@
+/**
+ * The Statistics class keeps track of the number of correct and incorrect guesses
+ * during a coaching session. It provides methods to update and retrieve these statistics.
+ */
 package org.rgupta;
 
 import java.io.Serializable;

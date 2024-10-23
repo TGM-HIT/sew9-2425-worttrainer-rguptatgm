@@ -1,3 +1,8 @@
+/**
+ * The SerializationStrategy class is an implementation of the PersistenceStrategy
+ * interface. It provides functionality to save and load the Coach object using
+ * Java's built-in serialization mechanism.
+ */
 package org.rgupta;
 
 import java.io.*;

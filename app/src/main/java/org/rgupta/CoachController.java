@@ -1,3 +1,8 @@
+/**
+ * The CoachController class serves as the main controller for managing user interactions
+ * between the Coach model and the CoachView. It handles user actions, updates the model,
+ * and ensures the UI reflects the state of the model.
+ */
 package org.rgupta;
 
 import javax.swing.*;

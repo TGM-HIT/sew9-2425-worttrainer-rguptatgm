@@ -1,3 +1,8 @@
+/**
+ * The CoachView class is responsible for displaying the UI to the user. It includes
+ * input fields, buttons, and feedback elements. This class provides methods for
+ * updating the display and interacting with the user.
+ */
 package org.rgupta;
 
 import javax.swing.*;
