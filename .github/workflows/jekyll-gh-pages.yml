@@ -31,17 +31,32 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # **Java einrichten**
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # Alternativ 'adopt', 'zulu', etc.
+          java-version: '17' # Ihre benötigte Java-Version
+
+      # **Javadocs generieren**
+      - name: Generate Javadocs
+        run: |
+          mkdir -p _site/javadoc
+          javadoc -d _site/javadoc -sourcepath src -subpackages your.main.package
+
+      # **Build mit Jekyll**
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
 
+      # **Javadoc Cleanup**
       - name: Javadoc Cleanup
         uses: cicirello/javadoc-cleanup@v1.3.7
         with:
-          # Pfad zum generierten Website-Root
-          path-to-root: ./_site
+          # Pfad zum Root der Website
+          path-to-root: ./_site/javadoc
           # Basis-URL-Pfad Ihrer Webseite (falls zutreffend)
           base-url-path: ''
           # Benutzerdefinierter Block, der in den Kopf jeder Javadoc-Seite eingefügt wird
