@@ -1,27 +1,20 @@
-# Workflow zum Erstellen und Bereitstellen einer Jekyll-Site auf GitHub Pages
 name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
-  # Ausführen bei Pushes auf den Hauptbranch
   push:
     branches: ["main"]
-
-  # Ermöglicht das manuelle Ausführen des Workflows aus dem Actions-Tab
   workflow_dispatch:
 
-# Setzt die Berechtigungen des GITHUB_TOKEN, um die Bereitstellung auf GitHub Pages zu ermöglichen
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Erlaubt nur eine gleichzeitige Bereitstellung
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Build-Job
   build:
     runs-on: ubuntu-latest
     steps:
@@ -31,41 +24,33 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # **Java einrichten**
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin' # Alternativ 'adopt', 'zulu', etc.
-          java-version: '17' # Ihre benötigte Java-Version
+          distribution: 'temurin'
+          java-version: '17'
 
-      # **Javadocs generieren**
       - name: Generate Javadocs
         run: |
           mkdir -p _site/javadoc
           javadoc -d _site/javadoc -sourcepath src -subpackages your.main.package
 
-      # **Build mit Jekyll**
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
 
-      # **Javadoc Cleanup**
       - name: Javadoc Cleanup
         uses: cicirello/javadoc-cleanup@v1.3.7
         with:
-          # Pfad zum Root der Website
           path-to-root: ./_site/javadoc
-          # Basis-URL-Pfad Ihrer Webseite (falls zutreffend)
           base-url-path: ''
-          # Benutzerdefinierter Block, der in den Kopf jeder Javadoc-Seite eingefügt wird
           user-defined-block: ''
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
-  # Deployment-Job
   deploy:
     environment:
       name: github-pages
