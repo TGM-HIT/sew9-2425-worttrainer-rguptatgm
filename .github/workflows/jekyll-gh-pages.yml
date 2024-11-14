@@ -1,0 +1,63 @@
+# Workflow zum Erstellen und Bereitstellen einer Jekyll-Site auf GitHub Pages
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+
+on:
+  # Ausführen bei Pushes auf den Hauptbranch
+  push:
+    branches: ["main"]
+
+  # Ermöglicht das manuelle Ausführen des Workflows aus dem Actions-Tab
+  workflow_dispatch:
+
+# Setzt die Berechtigungen des GITHUB_TOKEN, um die Bereitstellung auf GitHub Pages zu ermöglichen
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Erlaubt nur eine gleichzeitige Bereitstellung
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build-Job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Javadoc Cleanup
+        uses: cicirello/javadoc-cleanup@v1.3.7
+        with:
+          # Pfad zum generierten Website-Root
+          path-to-root: ./_site
+          # Basis-URL-Pfad Ihrer Webseite (falls zutreffend)
+          base-url-path: ''
+          # Benutzerdefinierter Block, der in den Kopf jeder Javadoc-Seite eingefügt wird
+          user-defined-block: ''
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  # Deployment-Job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
