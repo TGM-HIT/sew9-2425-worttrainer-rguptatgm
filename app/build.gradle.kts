@@ -8,13 +8,10 @@ repositories {
 }
 
 dependencies {
-    // JUnit Jupiter für Tests verwenden
+    // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-
-    // Laufzeitabhängigkeit für JUnit Plattform
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.0")
-
-    // Abhängigkeiten der Anwendung
+    // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.2-jre")
     implementation("commons-validator:commons-validator:1.9.0")
 }
@@ -23,36 +20,41 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    // Ensure compatibility with Java 8
+    withJavac {
+        options.release.set(8)
+    }
 }
 
 application {
-    // Hauptklasse der Anwendung definieren
+    // Define the main class for the application.
     mainClass.set("org.rgupta.App")
 }
 
 tasks.test {
+    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
 
-// Definiere den generateJavadoc Task
+// Define the generateJavadoc task
 tasks.register<Javadoc>("generateJavadoc") {
     group = "Documentation"
     description = "Generates Javadoc"
 
     source = sourceSets["main"].allJava
     classpath = sourceSets["main"].compileClasspath
-    destinationDirectory.set(file("$buildDir/docs/javadoc"))
+    // Use destinationDir as destinationDirectory might not be recognized
+    @Suppress("DEPRECATION")
+    destinationDir = file("$buildDir/docs/javadoc")
 
     options {
         encoding = "UTF-8"
+        // Cast options to StandardJavadocDocletOptions to access advanced options
+        (this as StandardJavadocDocletOptions).apply {
+            charset = "UTF-8" // Use 'charset' instead of 'charSet'
+            author.set(true)   // Use 'set' method for Property<Boolean>
+            version.set(true)  // Use 'set' method for Property<Boolean>
+            links.add("https://docs.oracle.com/javase/8/docs/api/") // Use 'links.add'
+        }
     }
-
-    val standardOptions = options as StandardJavadocDocletOptions
-
-    standardOptions.charSet = "UTF-8"
-    standardOptions.author = true
-    standardOptions.version = true
-    standardOptions.links("https://docs.oracle.com/javase/8/docs/api/")
 }
