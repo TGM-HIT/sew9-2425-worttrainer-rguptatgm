@@ -39,12 +39,12 @@ jobs:
         run: ./gradlew build
 
       - name: Generate Javadocs
-        run: ./gradlew generateJavadoc
+        run: ./gradlew :app:generateJavadoc
 
       - name: Copy Javadocs to _site
         run: |
           mkdir -p _site/javadoc
-          cp -r build/docs/javadoc/* _site/javadoc/
+          cp -r app/build/docs/javadoc/* _site/javadoc/
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
