@@ -16,7 +16,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(8)) // Set Java version for compatibility
     }
 }
 
@@ -28,6 +28,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
+// Define the generateJavadoc task
 tasks.register<Javadoc>("generateJavadoc") {
     group = "Documentation"
     description = "Generates Javadoc"
@@ -39,9 +40,9 @@ tasks.register<Javadoc>("generateJavadoc") {
     options {
         encoding = "UTF-8"
         (this as StandardJavadocDocletOptions).apply {
-            addBooleanOption("author", true)
-            addBooleanOption("version", true)
-            links?.add("https://docs.oracle.com/javase/8/docs/api/")
+            addBooleanOption("author", true)   // Use addBooleanOption for author
+            addBooleanOption("version", true)  // Use addBooleanOption for version
+            links("https://docs.oracle.com/javase/8/docs/api/")  // Use links method without null check
         }
     }
 }
