@@ -48,14 +48,13 @@ tasks.register<Javadoc>("generateJavadoc") {
 
     source = sourceSets["main"].allJava
     classpath = sourceSets["main"].compileClasspath
-    destinationDir = file("$buildDir/docs/javadoc")
+    destinationDirectory.set(file("build/docs/javadoc"))
 
     options {
-        this as StandardJavadocDocletOptions
         encoding = "UTF-8"
         charSet = "UTF-8"
-        author = true
-        version = true
+        addBooleanOption("author", true)
+        addBooleanOption("version", true)
         links("https://docs.oracle.com/javase/8/docs/api/")
     }
 }
