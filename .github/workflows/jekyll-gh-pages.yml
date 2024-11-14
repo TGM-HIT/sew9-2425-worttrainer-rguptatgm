@@ -37,8 +37,12 @@ jobs:
         with:
           distribution: 'temurin'      # Choose your distribution
           java-version: '17'           # Specify your Java version (e.g., 8, 11, 17, 21)
-          cache: 'maven'               # Optional: cache dependencies for Maven
+          cache: 'gradle'              # Changed from 'maven' to 'gradle' since you're using Gradle
           check-latest: true           # Optional: ensure the latest version is used
+
+      # **Add a step to build with Gradle**
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
 
       # Generate Javadocs
       - name: Generate Javadocs
