@@ -43,7 +43,6 @@ tasks.register<Javadoc>("generateJavadoc") {
 
     source = sourceSets["main"].allJava
     classpath = sourceSets["main"].compileClasspath
-    // Use destinationDir as destinationDirectory might not be recognized
     @Suppress("DEPRECATION")
     destinationDir = file("$buildDir/docs/javadoc")
 
