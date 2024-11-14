@@ -1,15 +1,9 @@
-/*
- * Buildskript für das Unterprojekt 'app'.
- */
-
 plugins {
-    // Anwendung und Java-Plugins hinzufügen
     application
     java
 }
 
 repositories {
-    // Maven Central für die Auflösung von Abhängigkeiten verwenden
     mavenCentral()
 }
 
@@ -27,8 +21,10 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 application {
@@ -37,24 +33,26 @@ application {
 }
 
 tasks.test {
-    // JUnit Plattform für Unit Tests verwenden
     useJUnitPlatform()
 }
 
 // Definiere den generateJavadoc Task
 tasks.register<Javadoc>("generateJavadoc") {
     group = "Documentation"
-    description = "Generiert die Javadoc Dokumentation"
+    description = "Generates Javadoc"
 
     source = sourceSets["main"].allJava
     classpath = sourceSets["main"].compileClasspath
-    destinationDirectory.set(file("build/docs/javadoc"))
+    destinationDirectory.set(file("$buildDir/docs/javadoc"))
 
     options {
         encoding = "UTF-8"
-        charSet = "UTF-8"
-        addBooleanOption("author", true)
-        addBooleanOption("version", true)
-        links("https://docs.oracle.com/javase/8/docs/api/")
     }
+
+    val standardOptions = options as StandardJavadocDocletOptions
+
+    standardOptions.charSet = "UTF-8"
+    standardOptions.author = true
+    standardOptions.version = true
+    standardOptions.links("https://docs.oracle.com/javase/8/docs/api/")
 }
